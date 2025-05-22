@@ -31,7 +31,7 @@ rodando = True
 
 # python_gui elements
 start_button = pygame_gui.elements.UIButton(
-    relative_rect=pygame.Rect([(400, 100), (100, 50)]),
+    relative_rect=pygame.Rect([(350, 100), (100, 50)]),
     text='Start Game',
     manager=gerente
 )
@@ -51,7 +51,8 @@ while rodando:
         if evento.type == pygame.QUIT:
             rodando = False
         if evento.type == pygame_gui.UI_BUTTON_PRESSED:
-            print('clicando')
+            if evento.ui_element == start_button:
+                estado = 'jogando'
         # verifica se o evento é 'clicar em alguma tecla'
         if evento.type == pygame.KEYDOWN:
             # verifica se clicou na tecla seta para esquerda
@@ -74,10 +75,13 @@ while rodando:
     # atualizando a tela
     tela.fill(tela_cor)
     
+    if estado == 'jogando':
+        criar_cobra()
     
     # estou pedindo para atualizar os elementos do pygame_gui
-    gerente.update(1 / 60.0)
-    gerente.draw_ui(tela)
+    if estado == 'inicio':
+        gerente.update(1 / 60.0)
+        gerente.draw_ui(tela)
     
     pygame.display.flip()
 
