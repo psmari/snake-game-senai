@@ -1,6 +1,8 @@
 import pygame
 import pygame_gui
 
+from cobra import Cobra
+
 # inicializando o pygame
 pygame.init()
 
@@ -19,14 +21,15 @@ tela_cor = (93, 101, 209)
 tela.fill(tela_cor)
 
 # cobrinha
-largura_cobra = 50
-altura_cobra = 50
-# centro da tela
-x = largura_tela / 2 - largura_cobra / 2
-y = altura_tela / 2 - altura_cobra / 2
+cobra = Cobra(
+    largura_tela / 2 - 50 / 2,
+    altura_tela / 2 - 50 / 2,
+    50,
+    50
+)
 
 # criando a cobra na posição inicial
-pygame.draw.rect(tela, (0, 0, 0), [(x, y), (largura_cobra, altura_cobra)])
+pygame.draw.rect(tela, cobra.cor, [(cobra.x, cobra.y), (cobra.largura, cobra.altura)])
 rodando = True
 
 # python_gui elements
@@ -37,7 +40,7 @@ start_button = pygame_gui.elements.UIButton(
 )
 
 def criar_cobra():
-    pygame.draw.rect(tela, (0, 0, 0), [(x, y), (largura_cobra, altura_cobra)])
+    pygame.draw.rect(tela, cobra.cor, [(cobra.x, cobra.y), (cobra.largura, cobra.altura)])
 # enum
 # inicio, jogando, fim
 estado = 'inicio'
@@ -55,22 +58,7 @@ while rodando:
                 estado = 'jogando'
         # verifica se o evento é 'clicar em alguma tecla'
         if evento.type == pygame.KEYDOWN:
-            # verifica se clicou na tecla seta para esquerda
-            if evento.key == pygame.K_LEFT:
-                # diminuindo o valor em 30 da variavel x
-                x = x - 30
-            # verifica se clicou na tecla seta para direita
-            if evento.key == pygame.K_RIGHT:
-                # aumentando o valor em 30 da variavel x
-                x = x + 30
-            # verificando se clicou na tecla para cima
-            if evento.key == pygame.K_UP:
-                # diminuindo 30 o valor da variavel y
-                y = y - 30
-            # verificando se a tecla para baixo foi clicada
-            if evento.key == pygame.K_DOWN:
-                # aumentando 30 o valor da variavel y 
-                y = y + 30
+            cobra.movimentar(evento.key)
             
     # atualizando a tela
     tela.fill(tela_cor)
